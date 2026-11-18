@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>치이의 크리스마스 쪽지 🎄</title>
+  <meta name="description" content="산타 모자를 쓴 겨울 친구들이 전해 주는 따뜻한 크리스마스 쪽지" />
+  <meta property="og:title" content="치이의 크리스마스 쪽지 🎄" />
+  <meta property="og:description" content="누군가 보낸 크리스마스 쪽지가 도착했어요! 눌러서 열어보세요 🎁" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    :root {
+      --bg-green: #164935;
+      --bg-green-dark: #0e3224;
+      --cream: #fff9f0;
+      --cream-soft: #fdf0df;
+      --red: #d94136;
+      --red-soft: #f6b6b0;
+      --ink: #3b2b27;
+      --ink-muted: #7b6660;
+      --gold: #eab349;
+      --blue-hood: #6ea4c9;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+      background: radial-gradient(circle at 50% 15%, #1e5b43 0%, var(--bg-green) 55%, var(--bg-green-dark) 100%);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* Decorative top pine garland triangles like cozy card frame */
+    .garland {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 18px;
+      background-image: linear-gradient(135deg, #276e50 25%, transparent 25%),
+                        linear-gradient(225deg, #276e50 25%, transparent 25%);
+      background-position: 0 0, 0 0;
+      background-size: 24px 18px;
+      background-repeat: repeat-x;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    #snow-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 5;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px 32px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--cream);
+      border-radius: 28px;
+      border: 4px solid #f2dfc8;
+      box-shadow: 0 22px 50px rgba(6, 24, 17, 0.42), 0 0 0 6px rgba(255, 249, 240, 0.12);
+      padding: 24px 20px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fbe7df;
+      color: #b5382e;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 11px;
+      border-radius: 999px;
+    }
+
+    .sound-btn {
+      border: none;
+      background: #f3e4d0;
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 11px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .sound-btn:active { transform: scale(0.95); }
+    .sound-btn.playing { background: #ffe4a3; color: #7a4b00; }
+
+    /* Cozy stage for the two Santa buddies */
+    .stage {
+      background: linear-gradient(180deg, #fae8dc 0%, #f5d8c8 100%);
+      border-radius: 22px;
+      border: 2.5px solid #edd0be;
+      padding: 16px 10px 6px;
+      position: relative;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .stage-sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .characters-svg {
+      width: 100%;
+      max-width: 310px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    @keyframes bobLeft {
+      0%, 100% { transform: translateY(0px) rotate(-1deg); }
+      50% { transform: translateY(-4px) rotate(1deg); }
+    }
+    @keyframes bobRight {
+      0%, 100% { transform: translateY(0px) rotate(1deg); }
+      50% { transform: translateY(-4px) rotate(-1deg); }
+    }
+    @keyframes blinkEyes {
+      0%, 44%, 48%, 100% { transform: scaleY(1); }
+      46% { transform: scaleY(0.1); }
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.86) translateY(14px); }
+      70% { opacity: 1; transform: scale(1.03) translateY(-2px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .buddy-left {
+      transform-origin: 95px 125px;
+      animation: bobLeft 2.8s ease-in-out infinite;
+    }
+    .buddy-right {
+      transform-origin: 215px 125px;
+      animation: bobRight 2.8s ease-in-out infinite 0.35s;
+    }
+    .eye-group {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: blinkEyes 4.4s infinite;
+    }
+
+    /* Sealed gift cover before opening */
+    .gift-cover {
+      text-align: center;
+      padding: 8px 6px 6px;
+    }
+    .gift-emoji-big {
+      font-size: 56px;
+      display: inline-block;
+      animation: bobLeft 2s ease-in-out infinite;
+      margin: 6px 0 10px;
+      cursor: pointer;
+    }
+    .title {
+      margin: 0 0 8px;
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+    .sub {
+      margin: 0 0 18px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink-muted);
+    }
+
+    .btn-primary {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, #e04c41 0%, #c63329 100%);
+      box-shadow: 0 8px 18px rgba(198, 51, 41, 0.28);
+      cursor: pointer;
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+    }
+    .btn-primary:active {
+      transform: scale(0.98);
+      box-shadow: 0 4px 10px rgba(198, 51, 41, 0.22);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      border: 2px solid #e6d2bc;
+      border-radius: 15px;
+      padding: 13px 16px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      background: #fff;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.14s ease;
+    }
+    .btn-secondary:active { background: #fbf1e6; }
+
+    /* Message display box */
+    .letter-box {
+      background: #fff;
+      border: 2px dashed #e7cbb2;
+      border-radius: 18px;
+      padding: 18px 16px;
+      margin-bottom: 14px;
+      animation: popIn 0.45s ease-out;
+    }
+    .letter-to {
+      font-size: 13px;
+      font-weight: 700;
+      color: #b5382e;
+      margin-bottom: 8px;
+    }
+    .letter-body {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: var(--ink);
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 44px;
+    }
+    .letter-from {
+      margin-top: 12px;
+      text-align: right;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-muted);
+    }
+
+    /* Composer form */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .input, .textarea {
+      width: 100%;
+      border: 2px solid #ecd9c6;
+      border-radius: 14px;
+      background: #fff;
+      padding: 11px 13px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .input:focus, .textarea:focus {
+      border-color: #d94136;
+    }
+    .textarea {
+      resize: none;
+      min-height: 92px;
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+    .char-count {
+      text-align: right;
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-bottom: 10px;
+    }
+
+    .sticker-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .sticker-chip {
+      flex: 1;
+      border: 2px solid #ecd9c6;
+      background: #fff;
+      border-radius: 12px;
+      padding: 8px 4px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .sticker-chip.active {
+      border-color: #d94136;
+      background: #fff0ee;
+      transform: translateY(-2px);
+    }
+
+    .share-result {
+      margin-top: 12px;
+      background: #f8ede0;
+      border-radius: 14px;
+      padding: 12px;
+      display: none;
+    }
+    .share-result.show { display: block; animation: popIn 0.3s ease; }
+    .share-url {
+      width: 100%;
+      border: 1.5px solid #dec6ae;
+      border-radius: 10px;
+      padding: 9px 10px;
+      font-size: 12px;
+      color: var(--ink);
+      background: #fff;
+      margin-bottom: 8px;
+    }
+    .share-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .mini-btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .mini-btn.copy { background: #1e5b43; color: #fff; }
+    .mini-btn.preview { background: #fff; color: var(--ink); border: 1.5px solid #d9c2aa; }
+
+    .footer-note {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255, 249, 240, 0.72);
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="garland"></div>
+  <canvas id="snow-canvas"></canvas>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="top-bar">
+        <span class="badge" id="mode-badge">🎄 크리스마스 쪽지</span>
+        <button class="sound-btn" id="sound-btn" type="button">🔔 오르골 켜기</button>
+      </div>
+
+      <!-- Cozy Duo Stage -->
+      <div class="stage">
+        <svg class="characters-svg" viewBox="0 0 320 175" xmlns="http://www.w3.org/2000/svg" aria-label="산타 모자를 쓴 겨울 친구들">
+          <!-- Warm soft cushion background -->
+          <rect x="18" y="34" width="284" height="118" rx="44" fill="#f2cbb8" opacity="0.55" />
+          <circle cx="48" cy="26" r="2.5" fill="#fff" opacity="0.8" />
+          <circle cx="272" cy="24" r="3" fill="#fff" opacity="0.85" />
+          <circle cx="160" cy="18" r="2" fill="#fff" opacity="0.8" />
+
+          <!-- Left Buddy (Round White Winter Friend in Santa Hat) -->
+          <g class="buddy-left">
+            <!-- Red Santa suit shoulders -->
+            <path d="M46 156 C46 130, 144 130, 144 156 Z" fill="#d94136" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
+            <!-- White collar trim -->
+            <ellipse cx="95" cy="135" rx="22" ry="7" fill="#fff" stroke="#4b352f" stroke-width="3" />
+            <!-- Cute round ears -->
+            <circle cx="56" cy="64" r="14" fill="#fff" stroke="#4b352f" stroke-width="3.5" />
+            <circle cx="134" cy="64" r="14" fill="#fff" stroke="#4b352f" stroke-width="3.5" />
+            <!-- Chubby round face -->
+            <ellipse cx="95" cy="96" rx="47" ry="42" fill="#fff" stroke="#4b352f" stroke-width="3.5" />
+            <!-- Santa hat -->
+            <path d="M62 58 C68 30, 118 28, 130 56 Z" fill="#d94136" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
+            <circle cx="133" cy="52" r="8" fill="#fff" stroke="#4b352f" stroke-width="3" />
+            <path d="M56 58 Q75 50 95 57 Q115 50 132 58 Q115 67 95 63 Q75 67 56 58 Z" fill="#fff" stroke="#4b352f" stroke-width="3" />
+            <!-- Rosy cheeks -->
+            <ellipse cx="66" cy="106" rx="10" ry="6" fill="#f7a8a8" opacity="0.78" />
+            <ellipse cx="124" cy="106" rx="10" ry="6" fill="#f7a8a8" opacity="0.78" />
+            <!-- Eyebrows -->
+            <path d="M71 80 Q76 77 81 80" fill="none" stroke="#4b352f" stroke-width="2.5" stroke-linecap="round" />
+            <path d="M109 80 Q114 77 119 80" fill="none" stroke="#4b352f" stroke-width="2.5" stroke-linecap="round" />
+            <!-- Blinking eyes -->
+            <g class="eye-group">
+              <circle cx="76" cy="92" r="6" fill="#4b352f" />
+              <circle cx="74" cy="90" r="2.2" fill="#fff" />
+              <circle cx="114" cy="92" r="6" fill="#4b352f" />
+              <circle cx="112" cy="90" r="2.2" fill="#fff" />
+            </g>
+            <!-- Happy w-mouth -->
+            <path d="M88 103 Q91.5 108 95 103 Q98.5 108 102 103" fill="none" stroke="#4b352f" stroke-width="2.8" stroke-linecap="round" />
+            <path d="M92 106 Q95 113 98 106" fill="#ef7e7a" stroke="#4b352f" stroke-width="2.2" stroke-linecap="round" />
+          </g>
+
+          <!-- Right Buddy (Sky-Blue Hooded Friend in Santa Hat) -->
+          <g class="buddy-right">
+            <!-- Red Santa suit shoulders -->
+            <path d="M168 156 C168 130, 266 130, 266 156 Z" fill="#d94136" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
+            <!-- White collar trim -->
+            <ellipse cx="217" cy="135" rx="22" ry="7" fill="#fff" stroke="#4b352f" stroke-width="3" />
+            <!-- Cat-like blue hood ears -->
+            <path d="M174 72 L172 42 L198 56 Z" fill="#6ea4c9" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
+            <path d="M260 72 L262 42 L236 56 Z" fill="#6ea4c9" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
+            <!-- Blue hood top -->
+            <ellipse cx="217" cy="95" rx="48" ry="43" fill="#6ea4c9" stroke="#4b352f" stroke-width="3.5" />
+            <!-- White inner face -->
+            <path d="M172 102 C172 72, 262 72, 262 102 C262 128, 240 137, 217 137 C194 137, 172 128, 172 102 Z" fill="#fff" stroke="#4b352f" stroke-width="3.2" />
+            <!-- Santa hat on top -->
+            <path d="M188 57 C196 31, 240 31, 248 57 Z" fill="#d94136" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
+            <circle cx="249" cy="49" r="7.5" fill="#fff" stroke="#4b352f" stroke-width="3" />
+            <path d="M182 57 Q200 49 217 56 Q234 49 252 57 Q234 65 217 61 Q200 65 182 57 Z" fill="#fff" stroke="#4b352f" stroke-width="3" />
+            <!-- Rosy cheeks -->
+            <ellipse cx="188" cy="108" rx="10" ry="6" fill="#f7a8a8" opacity="0.78" />
+            <ellipse cx="246" cy="108" rx="10" ry="6" fill="#f7a8a8" opacity="0.78" />
+            <!-- Smiling eyes -->
+            <g class="eye-group">
+              <path d="M191 93 Q198 86 205 93" fill="none" stroke="#4b352f" stroke-width="3.2" stroke-linecap="round" />
+              <path d="M229 93 Q236 86 243 93" fill="none" stroke="#4b352f" stroke-width="3.2" stroke-linecap="round" />
+            </g>
+            <!-- Cute cat mouth -->
+            <path d="M210 104 Q213.5 109 217 104 Q220.5 109 224 104" fill="none" stroke="#4b352f" stroke-width="2.8" stroke-linecap="round" />
+          </g>
+
+          <!-- Sticker accent in middle -->
+          <text id="stage-sticker" x="156" y="156" text-anchor="middle" font-size="24">🎁</text>
+        </svg>
+      </div>
+
+      <!-- VIEW 1: Gift Envelope (Recipient before tap) -->
+      <div id="view-sealed" class="gift-cover hidden">
+        <div class="gift-emoji-big" id="gift-tap-emoji">🎁</div>
+        <h1 class="title" id="sealed-title">크리스마스 쪽지가 도착했어요!</h1>
+        <p class="sub">아래 버튼을 누르면 오르골 멜로디와 함께<br />따뜻한 메시지가 열립니다 ✨</p>
+        <button class="btn-primary" id="open-btn" type="button">쪽지 열어보기 🎄</button>
+      </div>
+
+      <!-- VIEW 2: Opened Letter (Recipient after tap) -->
+      <div id="view-opened" class="hidden">
+        <div class="letter-box">
+          <div class="letter-to" id="letter-to">To. 소중한 너에게</div>
+          <div class="letter-body" id="letter-body"></div>
+          <div class="letter-from" id="letter-from">From. 겨울 친구들이</div>
+        </div>
+        <button class="btn-primary" id="make-own-btn" type="button">나도 크리스마스 쪽지 만들기 💌</button>
+        <button class="btn-secondary" id="replay-music-btn" type="button">🔔 오르골 앞부분 다시 듣기</button>
+      </div>
+
+      <!-- VIEW 3: Composer (Create your own message) -->
+      <div id="view-composer">
+        <h1 class="title" style="font-size:19px; margin-bottom:6px;">어떤 말을 전해 줄까? ✨</h1>
+        <p class="sub" style="margin-bottom:12px; font-size:13px;">짧은 크리스마스 안부를 적으면 친구한테 보낼 링크를 만들어 줄게!</p>
+
+        <div class="field-row">
+          <input class="input" id="input-to" type="text" maxlength="14" placeholder="받는 사람 (선택)" />
+          <input class="input" id="input-from" type="text" maxlength="14" placeholder="보내는 사람 (선택)" />
+        </div>
+
+        <textarea class="textarea" id="input-msg" maxlength="80" placeholder="예) 올겨울 감기 조심하고, 올해 크리스마스엔 좋은 일만 가득하길! 🎄"></textarea>
+        <div class="char-count"><span id="char-now">0</span> / 80자</div>
+
+        <div class="sticker-row" aria-label="꾸미기 스티커 선택">
+          <button class="sticker-chip active" data-sticker="🎁" type="button">🎁</button>
+          <button class="sticker-chip" data-sticker="🍭" type="button">🍭</button>
+          <button class="sticker-chip" data-sticker="❄️" type="button">❄️</button>
+          <button class="sticker-chip" data-sticker="⭐" type="button">⭐</button>
+        </div>
+
+        <button class="btn-primary" id="create-link-btn" type="button">쪽지 링크 만들기 🔗</button>
+
+        <div class="share-result" id="share-result">
+          <input class="share-url" id="share-url-input" type="text" readonly />
+          <div class="share-actions">
+            <button class="mini-btn copy" id="copy-btn" type="button">링크 복사하기</button>
+            <button class="mini-btn preview" id="preview-btn" type="button">열리는 모습 보기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">chii-xmas · 겨울 친구들이 전하는 크리스마스 쪽지</p>
+  </main>
+
+  <script>
+    // --- 1. Snowfall Canvas ---
+    (function initSnow() {
+      const canvas = document.getElementById('snow-canvas');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+      const flakes = Array.from({ length: 42 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: 1.5 + Math.random() * 2.8,
+        vy: 0.45 + Math.random() * 0.9,
+        vx: (Math.random() - 0.5) * 0.4,
+        a: 0.35 + Math.random() * 0.55
+      }));
+      function tick() {
+        ctx.clearRect(0, 0, w, h);
+        for (const f of flakes) {
+          f.y += f.vy;
+          f.x += f.vx;
+          if (f.y > h + 6) { f.y = -6; f.x = Math.random() * w; }
+          if (f.x > w + 6) f.x = -6;
+          if (f.x < -6) f.x = w + 6;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 250, 242, ${f.a})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(tick);
+      }
+      tick();
+    })();
+
+    // --- 2. Festive Christmas Music-Box Intro (Original Web Audio, ~13s intro only) ---
+    const MusicBox = (() => {
+      let ctx = null;
+      let timers = [];
+      let isPlaying = false;
+
+      // Bright festive winter bell intro melody (copyright-free original arrangement)
+      const notes = [
+        [523.25, 0.00, 0.32], // C5
+        [659.25, 0.28, 0.32], // E5
+        [783.99, 0.56, 0.38], // G5
+        [880.00, 0.92, 0.45], // A5
+        [783.99, 1.38, 0.34], // G5
+        [659.25, 1.72, 0.34], // E5
+        [587.33, 2.08, 0.55], // D5
+
+        [523.25, 2.75, 0.30], // C5
+        [587.33, 3.05, 0.30], // D5
+        [659.25, 3.35, 0.34], // E5
+        [783.99, 3.70, 0.42], // G5
+        [698.46, 4.15, 0.34], // F5
+        [659.25, 4.50, 0.34], // E5
+        [587.33, 4.86, 0.60], // D5
+
+        [659.25, 5.65, 0.30], // E5
+        [783.99, 5.95, 0.30], // G5
+        [1046.50, 6.26, 0.48], // C6
+        [987.77, 6.76, 0.34], // B5
+        [880.00, 7.12, 0.38], // A5
+        [783.99, 7.52, 0.50], // G5
+
+        [698.46, 8.15, 0.32], // F5
+        [659.25, 8.48, 0.32], // E5
+        [587.33, 8.82, 0.36], // D5
+        [659.25, 9.20, 0.36], // E5
+        [523.25, 9.62, 0.95], // C5 (warm finish)
+      ];
+
+      function stop() {
+        timers.forEach(clearTimeout);
+        timers = [];
+        isPlaying = false;
+        updateSoundBtn();
+      }
+
+      function playTone(freq, startOffset, dur) {
+        if (!ctx) return;
+        const t = ctx.currentTime + startOffset;
+        const osc = ctx.createOscillator();
+        const over = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, t);
+        over.type = 'triangle';
+        over.frequency.setValueAtTime(freq * 2, t);
+
+        const overGain = ctx.createGain();
+        overGain.gain.setValueAtTime(0.08, t);
+
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.exponentialRampToValueAtTime(0.16, t + 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + dur + 0.35);
+
+        osc.connect(gain);
+        over.connect(overGain);
+        overGain.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(t);
+        over.start(t);
+        osc.stop(t + dur + 0.4);
+        over.stop(t + dur + 0.4);
+      }
+
+      function playIntro() {
+        stop();
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!ctx) ctx = new AudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        isPlaying = true;
+        updateSoundBtn();
+        notes.forEach(([f, s, d]) => playTone(f, s, d));
+
+        const endTimer = setTimeout(() => {
+          isPlaying = false;
+          updateSoundBtn();
+        }, 11200);
+        timers.push(endTimer);
+      }
+
+      return { playIntro, stop, get playing() { return isPlaying; } };
+    })();
+
+    const soundBtn = document.getElementById('sound-btn');
+    function updateSoundBtn() {
+      if (MusicBox.playing) {
+        soundBtn.textContent = '🔊 오르골 재생 중';
+        soundBtn.classList.add('playing');
+      } else {
+        soundBtn.textContent = '🔔 오르골 켜기';
+        soundBtn.classList.remove('playing');
+      }
+    }
+    soundBtn.addEventListener('click', () => {
+      if (MusicBox.playing) MusicBox.stop();
+      else MusicBox.playIntro();
+    });
+
+    // --- 3. Base64url UTF-8 Encoding / Decoding ---
+    function encodePayload(obj) {
+      const json = JSON.stringify(obj);
+      const bytes = new TextEncoder().encode(json);
+      let bin = '';
+      bytes.forEach((b) => { bin += String.fromCharCode(b); });
+      return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    function decodePayload(str) {
+      try {
+        let b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+        while (b64.length % 4) b64 += '=';
+        const bin = atob(b64);
+        const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+        return JSON.parse(new TextDecoder().decode(bytes));
+      } catch {
+        return null;
+      }
+    }
+
+    // --- 4. View Switching & Composer ---
+    const viewSealed = document.getElementById('view-sealed');
+    const viewOpened = document.getElementById('view-opened');
+    const viewComposer = document.getElementById('view-composer');
+    const stageSticker = document.getElementById('stage-sticker');
+
+    let selectedSticker = '🎁';
+    document.querySelectorAll('.sticker-chip').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sticker-chip').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedSticker = btn.dataset.sticker;
+        stageSticker.textContent = selectedSticker;
+      });
+    });
+
+    const inputTo = document.getElementById('input-to');
+    const inputFrom = document.getElementById('input-from');
+    const inputMsg = document.getElementById('input-msg');
+    const charNow = document.getElementById('char-now');
+    inputMsg.addEventListener('input', () => {
+      charNow.textContent = inputMsg.value.length;
+    });
+
+    function showMode(mode) {
+      viewSealed.classList.toggle('hidden', mode !== 'sealed');
+      viewOpened.classList.toggle('hidden', mode !== 'opened');
+      viewComposer.classList.toggle('hidden', mode !== 'composer');
+    }
+
+    let currentMessageData = null;
+
+    function openLetter(data) {
+      currentMessageData = data;
+      stageSticker.textContent = data.s || '🎁';
+      document.getElementById('letter-to').textContent = data.t ? `To. ${data.t}` : 'To. 소중한 너에게';
+      document.getElementById('letter-body').textContent = data.m || '';
+      document.getElementById('letter-from').textContent = data.f ? `From. ${data.f}` : 'From. 겨울 친구들이';
+      showMode('opened');
+      MusicBox.playIntro();
+    }
+
+    function loadFromHash() {
+      const hash = window.location.hash || '';
+      const match = hash.match(/c=([^&]+)/);
+      if (match && match[1]) {
+        const data = decodePayload(match[1]);
+        if (data && data.m) {
+          currentMessageData = data;
+          stageSticker.textContent = data.s || '🎁';
+          document.getElementById('gift-tap-emoji').textContent = data.s || '🎁';
+          document.getElementById('sealed-title').textContent = data.t
+            ? `${data.t}에게 쪽지가 도착했어요!`
+            : '크리스마스 쪽지가 도착했어요!';
+          showMode('sealed');
+          return;
+        }
+      }
+      showMode('composer');
+    }
+
+    document.getElementById('open-btn').addEventListener('click', () => {
+      if (currentMessageData) openLetter(currentMessageData);
+    });
+    document.getElementById('gift-tap-emoji').addEventListener('click', () => {
+      if (currentMessageData) openLetter(currentMessageData);
+    });
+    document.getElementById('replay-music-btn').addEventListener('click', () => {
+      MusicBox.playIntro();
+    });
+    document.getElementById('make-own-btn').addEventListener('click', () => {
+      MusicBox.stop();
+      history.replaceState(null, '', window.location.pathname);
+      showMode('composer');
+    });
+
+    const shareResult = document.getElementById('share-result');
+    const shareUrlInput = document.getElementById('share-url-input');
+    const copyBtn = document.getElementById('copy-btn');
+
+    document.getElementById('create-link-btn').addEventListener('click', () => {
+      const msg = inputMsg.value.trim();
+      if (!msg) {
+        inputMsg.focus();
+        inputMsg.placeholder = '전하고 싶은 말을 먼저 적어 주세요!';
+        return;
+      }
+      const payload = {
+        v: 1,
+        m: msg,
+        t: inputTo.value.trim(),
+        f: inputFrom.value.trim(),
+        s: selectedSticker
+      };
+      const encoded = encodePayload(payload);
+      const base = `${window.location.origin}${window.location.pathname}`;
+      const fullUrl = `${base}#c=${encoded}`;
+      shareUrlInput.value = fullUrl;
+      shareResult.classList.add('show');
+      copyBtn.textContent = '링크 복사하기';
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      const url = shareUrlInput.value;
+      try {
+        await navigator.clipboard.writeText(url);
+        copyBtn.textContent = '복사 완료! ✅';
+      } catch {
+        shareUrlInput.select();
+        document.execCommand('copy');
+        copyBtn.textContent = '복사 완료! ✅';
+      }
+    });
+
+    document.getElementById('preview-btn').addEventListener('click', () => {
+      const url = shareUrlInput.value;
+      const hashPart = url.split('#')[1];
+      if (hashPart) {
+        window.location.hash = hashPart;
+        loadFromHash();
+      }
+    });
+
+    window.addEventListener('hashchange', loadFromHash);
+    loadFromHash();
+  </script>
+</body>
+</html>
