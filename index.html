@@ -388,78 +388,89 @@
       </div>
 
       <!-- Cozy Duo Stage -->
-      <div class="stage">
-        <svg class="characters-svg" viewBox="0 0 320 175" xmlns="http://www.w3.org/2000/svg" aria-label="산타 모자를 쓴 겨울 친구들">
-          <!-- Warm soft cushion background -->
-          <rect x="18" y="34" width="284" height="118" rx="44" fill="#f2cbb8" opacity="0.55" />
-          <circle cx="48" cy="26" r="2.5" fill="#fff" opacity="0.8" />
-          <circle cx="272" cy="24" r="3" fill="#fff" opacity="0.85" />
-          <circle cx="160" cy="18" r="2" fill="#fff" opacity="0.8" />
+      <div class="stage" style="background: linear-gradient(180deg, #f8e3dc 0%, #f2cfc6 100%); border-color: #215a40; border-width: 3px; padding: 10px 0 0;">
+        <svg class="characters-svg" viewBox="0 0 320 170" style="max-width: 100%;" xmlns="http://www.w3.org/2000/svg" aria-label="산타 모자를 쓴 겨울 친구들">
+          <!-- Soft warm room background -->
+          <rect x="0" y="0" width="320" height="170" fill="#f7dfd8" />
+          <path d="M0 36 Q160 12 320 36 L320 170 L0 170 Z" fill="#f1cfc6" opacity="0.65" />
+          <!-- Tiny snow / dust sparkles -->
+          <circle cx="32" cy="24" r="2.2" fill="#fff" opacity="0.85" />
+          <circle cx="158" cy="18" r="2" fill="#fff" opacity="0.85" />
+          <circle cx="288" cy="26" r="2.5" fill="#fff" opacity="0.85" />
+          <circle cx="298" cy="52" r="2" fill="#5e453e" opacity="0.25" />
+          <circle cx="22" cy="60" r="2" fill="#5e453e" opacity="0.25" />
 
-          <!-- Left Buddy (Round White Winter Friend in Santa Hat) -->
+          <!-- Left Buddy (Squishy round white buddy with tiny top ears & tiny perched Santa hat) -->
           <g class="buddy-left">
-            <!-- Red Santa suit shoulders -->
-            <path d="M46 156 C46 130, 144 130, 144 156 Z" fill="#d94136" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
-            <!-- White collar trim -->
-            <ellipse cx="95" cy="135" rx="22" ry="7" fill="#fff" stroke="#4b352f" stroke-width="3" />
-            <!-- Cute round ears -->
-            <circle cx="56" cy="64" r="14" fill="#fff" stroke="#4b352f" stroke-width="3.5" />
-            <circle cx="134" cy="64" r="14" fill="#fff" stroke="#4b352f" stroke-width="3.5" />
-            <!-- Chubby round face -->
-            <ellipse cx="95" cy="96" rx="47" ry="42" fill="#fff" stroke="#4b352f" stroke-width="3.5" />
-            <!-- Santa hat -->
-            <path d="M62 58 C68 30, 118 28, 130 56 Z" fill="#d94136" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
-            <circle cx="133" cy="52" r="8" fill="#fff" stroke="#4b352f" stroke-width="3" />
-            <path d="M56 58 Q75 50 95 57 Q115 50 132 58 Q115 67 95 63 Q75 67 56 58 Z" fill="#fff" stroke="#4b352f" stroke-width="3" />
-            <!-- Rosy cheeks -->
-            <ellipse cx="66" cy="106" rx="10" ry="6" fill="#f7a8a8" opacity="0.78" />
-            <ellipse cx="124" cy="106" rx="10" ry="6" fill="#f7a8a8" opacity="0.78" />
-            <!-- Eyebrows -->
-            <path d="M71 80 Q76 77 81 80" fill="none" stroke="#4b352f" stroke-width="2.5" stroke-linecap="round" />
-            <path d="M109 80 Q114 77 119 80" fill="none" stroke="#4b352f" stroke-width="2.5" stroke-linecap="round" />
-            <!-- Blinking eyes -->
+            <!-- Red Santa outfit shoulders -->
+            <path d="M12 170 C18 142, 152 142, 158 170 Z" fill="#d94436" stroke="#4f352e" stroke-width="3.2" stroke-linejoin="round" />
+            <!-- Tiny top ears -->
+            <ellipse cx="48" cy="40" rx="11" ry="10" fill="#fff" stroke="#4f352e" stroke-width="3.2" />
+            <ellipse cx="122" cy="40" rx="11" ry="10" fill="#fff" stroke="#4f352e" stroke-width="3.2" />
+            <!-- Squishy mochi head (wider at cheeks!) -->
+            <path d="M22 98 C22 52, 52 38, 85 38 C118 38, 148 52, 148 98 C148 136, 122 152, 85 152 C48 152, 22 136, 22 98 Z" fill="#fff" stroke="#4f352e" stroke-width="3.2" stroke-linejoin="round" />
+            <!-- Tiny perched Santa hat between ears -->
+            <path d="M62 36 C68 15, 102 14, 108 36 Z" fill="#d94436" stroke="#4f352e" stroke-width="3" stroke-linejoin="round" />
+            <circle cx="109" cy="28" r="6" fill="#fff" stroke="#4f352e" stroke-width="2.6" />
+            <path d="M56 38 Q70 30 85 35 Q100 30 114 38 Q100 47 85 43 Q70 47 56 38 Z" fill="#fff" stroke="#4f352e" stroke-width="2.8" stroke-linejoin="round" />
+            <!-- Tiny eyebrows -->
+            <path d="M54 66 Q61 62 67 66" fill="none" stroke="#4f352e" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M103 66 Q109 62 116 66" fill="none" stroke="#4f352e" stroke-width="2.4" stroke-linecap="round" />
+            <!-- Big glossy eyes -->
             <g class="eye-group">
-              <circle cx="76" cy="92" r="6" fill="#4b352f" />
-              <circle cx="74" cy="90" r="2.2" fill="#fff" />
-              <circle cx="114" cy="92" r="6" fill="#4b352f" />
-              <circle cx="112" cy="90" r="2.2" fill="#fff" />
+              <ellipse cx="60" cy="86" rx="10" ry="11.5" fill="#4f352e" />
+              <ellipse cx="57" cy="81" rx="4.2" ry="4.8" fill="#fff" />
+              <path d="M54 91 Q60 95 66 91" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+              <ellipse cx="110" cy="86" rx="10" ry="11.5" fill="#4f352e" />
+              <ellipse cx="107" cy="81" rx="4.2" ry="4.8" fill="#fff" />
+              <path d="M104 91 Q110 95 116 91" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" />
             </g>
-            <!-- Happy w-mouth -->
-            <path d="M88 103 Q91.5 108 95 103 Q98.5 108 102 103" fill="none" stroke="#4b352f" stroke-width="2.8" stroke-linecap="round" />
-            <path d="M92 106 Q95 113 98 106" fill="#ef7e7a" stroke="#4b352f" stroke-width="2.2" stroke-linecap="round" />
+            <!-- Soft pink blush ovals + //// lines -->
+            <ellipse cx="42" cy="105" rx="12" ry="7" fill="#f7b7bc" opacity="0.72" />
+            <path d="M35 108 L38 102 M40 108 L43 102 M45 108 L48 102 M50 108 L53 102" stroke="#d46a73" stroke-width="1.6" stroke-linecap="round" />
+            <ellipse cx="128" cy="105" rx="12" ry="7" fill="#f7b7bc" opacity="0.72" />
+            <path d="M121 108 L124 102 M126 108 L129 102 M131 108 L134 102 M136 108 L139 102" stroke="#d46a73" stroke-width="1.6" stroke-linecap="round" />
+            <!-- Cute w + open triangle mouth -->
+            <path d="M77 99 Q81 105 85 99 Q89 105 93 99" fill="none" stroke="#4f352e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M81 103 Q85 114 89 103 Z" fill="#f27d82" stroke="#4f352e" stroke-width="2.2" stroke-linejoin="round" />
           </g>
 
-          <!-- Right Buddy (Sky-Blue Hooded Friend in Santa Hat) -->
+          <!-- Right Buddy (Squishy round cat-eared blue-cap buddy snuggled right next!) -->
           <g class="buddy-right">
-            <!-- Red Santa suit shoulders -->
-            <path d="M168 156 C168 130, 266 130, 266 156 Z" fill="#d94136" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
-            <!-- White collar trim -->
-            <ellipse cx="217" cy="135" rx="22" ry="7" fill="#fff" stroke="#4b352f" stroke-width="3" />
-            <!-- Cat-like blue hood ears -->
-            <path d="M174 72 L172 42 L198 56 Z" fill="#6ea4c9" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
-            <path d="M260 72 L262 42 L236 56 Z" fill="#6ea4c9" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
-            <!-- Blue hood top -->
-            <ellipse cx="217" cy="95" rx="48" ry="43" fill="#6ea4c9" stroke="#4b352f" stroke-width="3.5" />
-            <!-- White inner face -->
-            <path d="M172 102 C172 72, 262 72, 262 102 C262 128, 240 137, 217 137 C194 137, 172 128, 172 102 Z" fill="#fff" stroke="#4b352f" stroke-width="3.2" />
-            <!-- Santa hat on top -->
-            <path d="M188 57 C196 31, 240 31, 248 57 Z" fill="#d94136" stroke="#4b352f" stroke-width="3.5" stroke-linejoin="round" />
-            <circle cx="249" cy="49" r="7.5" fill="#fff" stroke="#4b352f" stroke-width="3" />
-            <path d="M182 57 Q200 49 217 56 Q234 49 252 57 Q234 65 217 61 Q200 65 182 57 Z" fill="#fff" stroke="#4b352f" stroke-width="3" />
-            <!-- Rosy cheeks -->
-            <ellipse cx="188" cy="108" rx="10" ry="6" fill="#f7a8a8" opacity="0.78" />
-            <ellipse cx="246" cy="108" rx="10" ry="6" fill="#f7a8a8" opacity="0.78" />
-            <!-- Smiling eyes -->
+            <!-- Red Santa outfit shoulders -->
+            <path d="M162 170 C168 142, 302 142, 308 170 Z" fill="#d94436" stroke="#4f352e" stroke-width="3.2" stroke-linejoin="round" />
+            <!-- Pointed cat ears -->
+            <path d="M180 68 L178 30 L212 46 Z" fill="#689ec4" stroke="#4f352e" stroke-width="3.2" stroke-linejoin="round" />
+            <path d="M290 68 L292 30 L258 46 Z" fill="#689ec4" stroke="#4f352e" stroke-width="3.2" stroke-linejoin="round" />
+            <!-- Squishy mochi head -->
+            <path d="M172 98 C172 52, 202 38, 235 38 C268 38, 298 52, 298 98 C298 136, 272 152, 235 152 C198 152, 172 136, 172 98 Z" fill="#fff" stroke="#4f352e" stroke-width="3.2" stroke-linejoin="round" />
+            <!-- Blue cap/hairline with cute M-dip -->
+            <path d="M176 76 C182 44, 212 38, 235 38 C258 38, 288 44, 294 76 C276 62, 250 56, 235 66 C220 56, 194 62, 176 76 Z" fill="#689ec4" stroke="#4f352e" stroke-width="3" stroke-linejoin="round" />
+            <!-- Tiny perched Santa hat -->
+            <path d="M214 36 C220 15, 252 14, 258 36 Z" fill="#d94436" stroke="#4f352e" stroke-width="3" stroke-linejoin="round" />
+            <circle cx="259" cy="28" r="5.8" fill="#fff" stroke="#4f352e" stroke-width="2.6" />
+            <path d="M208 38 Q221 30 235 35 Q249 30 262 38 Q249 47 235 43 Q221 47 208 38 Z" fill="#fff" stroke="#4f352e" stroke-width="2.8" stroke-linejoin="round" />
+            <!-- Cute forehead dot & tiny eyebrows -->
+            <circle cx="235" cy="74" r="1.6" fill="#4f352e" />
+            <path d="M202 72 Q208 69 213 72" fill="none" stroke="#4f352e" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M257 72 Q262 69 268 72" fill="none" stroke="#4f352e" stroke-width="2.2" stroke-linecap="round" />
+            <!-- Happy curved smiling eyes -->
             <g class="eye-group">
-              <path d="M191 93 Q198 86 205 93" fill="none" stroke="#4b352f" stroke-width="3.2" stroke-linecap="round" />
-              <path d="M229 93 Q236 86 243 93" fill="none" stroke="#4b352f" stroke-width="3.2" stroke-linecap="round" />
+              <path d="M198 92 Q207 82 216 92" fill="none" stroke="#4f352e" stroke-width="3.2" stroke-linecap="round" />
+              <path d="M254 92 Q263 82 272 92" fill="none" stroke="#4f352e" stroke-width="3.2" stroke-linecap="round" />
             </g>
+            <!-- Soft pink blush ovals + //// lines -->
+            <ellipse cx="192" cy="106" rx="12" ry="7" fill="#f7b7bc" opacity="0.72" />
+            <path d="M185 109 L188 103 M190 109 L193 103 M195 109 L198 103 M200 109 L203 103" stroke="#d46a73" stroke-width="1.6" stroke-linecap="round" />
+            <ellipse cx="278" cy="106" rx="12" ry="7" fill="#f7b7bc" opacity="0.72" />
+            <path d="M271 109 L274 103 M276 109 L279 103 M281 109 L284 103 M286 109 L289 103" stroke="#d46a73" stroke-width="1.6" stroke-linecap="round" />
             <!-- Cute cat mouth -->
-            <path d="M210 104 Q213.5 109 217 104 Q220.5 109 224 104" fill="none" stroke="#4b352f" stroke-width="2.8" stroke-linecap="round" />
+            <path d="M227 100 Q231 106 235 100 Q239 106 243 100" fill="none" stroke="#4f352e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M232 104 Q235 112 238 104 Z" fill="#f27d82" stroke="#4f352e" stroke-width="2" stroke-linejoin="round" />
           </g>
 
-          <!-- Sticker accent in middle -->
-          <text id="stage-sticker" x="156" y="156" text-anchor="middle" font-size="24">🎁</text>
+          <!-- Sticker accent -->
+          <text id="stage-sticker" x="160" y="158" text-anchor="middle" font-size="22">🎁</text>
         </svg>
       </div>
 
